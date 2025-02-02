@@ -1,6 +1,9 @@
 {
   "version": 1,
   "isRoot": true,
+  "sdk": {
+    "version": "8.0.405"
+  },
   "tools": {
     "dotnet-ef": {
       "version": "9.0.1",
