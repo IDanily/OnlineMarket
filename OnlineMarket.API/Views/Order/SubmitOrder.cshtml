@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Mvc
+@using OnlineMarket.API.ViewModels
+@model OnlineMarket.API.ViewModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "Оформление заказа";
+}
+<html>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
+            <h2 class="text-center mb-4">Оформление заказа</h2>
+            @if (Model != null)
+            {
+                <form method="post" action="@Url.Action("SubmitOrder", "Order")">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Ваше имя</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Ваш email</label>
+                        <input type="email" class="form-control" id="Email" name="Email" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Phone" class="form-label">Ваш телефон</label>
+                        <input type="text" class="form-control" id="Phone" name="Phone" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Address" class="form-label">Адрес доставки</label>
+                        <input type="text" class="form-control" id="Address" name="Address" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ProductsList" class="form-label">Список товаров</label>
+                        <textarea class="form-control bg-light" id="ProductsList" name="ProductsList" readonly style="height: 120px; resize: none;">@Model.ProductsList</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="TotalPrice" class="form-label">Общая сумма</label>
+                        <input type="text" class="form-control fw-bold text-success" id="TotalPrice" name="TotalPrice" value="@Model.TotalPrice" readonly />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Оформить заказ</button>
+                </form>
+            }
+        </div>
+    </div>
+</body>
+</html>

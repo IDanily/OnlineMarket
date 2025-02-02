@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc
+@model OnlineMarket.API.ViewModels.ProductsActionModel
+@{
+    ViewData["Title"] = "Список товаров";
+}
+@if (Model != null)
+{
+    <body>
+        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProductModalLabel">Редактировать товар</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="@Url.Action("UpdateProduct", "Product", new { id = Model.Id })" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="Name" class="form-label">Наименование</label>
+                                <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="Price" class="form-label">Цена</label>
+                                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", required = "required", step = "0.01" })
+                            </div>
+                            <div class="mb-3">
+                                <label for="Description" class="form-label">Описание</label>
+                                <textarea class="form-control" id="Description" name="Description">@Model.Description</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="picture" class="form-label">Изображение</label>
+                                <input type="file" class="form-control" id="picture" name="picture" accept="image/*">
+                                @if (!string.IsNullOrEmpty(Model.ExistingImage))
+                                {
+                                    <div class="mt-2">
+                                        <img src="~/Uploads/@Model.ExistingImage" alt="@Model.Name" class="img-fluid" style="max-width: 150px;">
+                                    </div>
+                                }
+                            </div>
+                            <div class="row" style="justify-content: center;">
+                                <div class="col-lg-8">
+                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+}

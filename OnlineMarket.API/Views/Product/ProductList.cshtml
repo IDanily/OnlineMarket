@@ -1,0 +1,103 @@
+﻿@model OnlineMarket.API.ViewModels.ProductsListingModel
+
+@{
+    ViewData["Title"] = "Список товаров";
+}
+<body>
+    <h1 class="mb-3">Список товаров</h1>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <button type="button" class="btn btn-success create-product-btn" data-toggle="modal" data-target="#createProductModal">
+            Создать новый продукт
+        </button>
+    </div>
+
+    <table class="table table-striped shadow-sm rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Фото</th>
+                <th>Наименование</th>
+                <th>Цена</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Products)
+            {
+                <tr class="align-middle">
+                    <td><img src="~/Uploads/@product.Picture" alt="@product.Name" class="product-image rounded" style="width: 50px; height: 50px;"></td>
+                    <td>@product.Name</td>
+                    <td>@product.Price.ToString("C")</td>
+                    <td>
+                        @if (Model.IsAdmin || Model.IsSeller)
+                        {
+                            <a href="@Url.Action("UpdateProduct", "Product", new { id = product.Id })"
+                               class="btn btn-warning btn-sm"
+                               data-toggle="modal"
+                               data-target="editProductModal"
+                               data-type="edit">Редактировать</a>
+
+                            <a href="@Url.Action("DeleteProduct", "Product", new { id = product.Id })"
+                               class="btn btn-danger btn-sm"
+                               data-toggle="modal"
+                               data-target="deleteProductModal"
+                               data-type="delete">Удалить</a>
+                        }
+                        <button class="btn btn-success btn-sm add-to-cart" data-id="@product.Id" data-name="@product.Name" data-price="@product.Price">Добавить в корзину</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <style>
+        .table {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    </style>
+
+    <!-- Модальное окно для создания нового продукта -->
+    <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createProductModalLabel">Создание нового продукта</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createProductForm" method="post" action="@Url.Action("Create", "Product")" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Название продукта</label>
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Описание продукта</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Цена</label>
+                            <input type="number" class="form-control" id="price" name="price">
+                        </div>
+                        <div class="mb-3">
+                            <label for="picture" class="form-label">Изображение</label>
+                            <input type="file" class="form-control" id="picture" name="picture" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Категория</label>
+                            <select class="form-control" id="Category" name="CategoryId">
+                                <option value="">Выберите категорию</option>
+                                <!-- Категории будут загружаться динамически -->
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" form="createProductForm" class="btn btn-primary">Создать продукт</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

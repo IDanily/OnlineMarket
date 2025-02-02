@@ -1,0 +1,45 @@
+﻿/* Современные стили для модального окна */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #ddd;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-body {
+    font-size: 16px;
+    color: #555;
+}
+
+.modal-footer {
+    border-top: 2px solid #ddd;
+    padding-top: 15px;
+}
+
+.btn-primary {
+    background-color: #ff5733;
+    border-color: #ff5733;
+}
+
+    .btn-primary:hover {
+        background-color: #e04f2f;
+        border-color: #e04f2f;
+    }
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    border-color: #ddd;
+}
+
+    .btn-secondary:hover {
+        background-color: #e0e0e0;
+    }

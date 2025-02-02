@@ -1,0 +1,656 @@
+﻿/* Общие стили */
+html, body {
+    height: 100%; /* Устанавливаем высоту на 100% */
+    margin: 0; /* Убираем стандартные отступы */
+}
+
+.wrapper {
+    min-height: 100%; /* Устанавливаем минимальную высоту на 100% */
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto; /* Это заставит футер всегда быть внизу */
+}
+
+/* Стили для футера */
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+.container {
+    max-width: 1200px; /* Увеличиваем максимальную ширину контейнера */
+    padding-left: 30px; /* Добавляем отступ слева */
+    padding-right: 30px; /* Добавляем отступ справа */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+    a:hover {
+        color: #007bff;
+    }
+
+/* Кнопки */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+
+.owl-banner .item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.products {
+    padding: 100px 0;
+    background-color: #f9f9f9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.product-price {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+}
+
+.logo img {
+    width: 100%;
+    max-width: 80px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+    .search-bar input {
+        width: 80%;
+        padding: 10px;
+        border-radius: 25px;
+        border: 1px solid #ddd;
+        margin-right: 10px;
+    }
+
+    .search-bar button {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+
+.filter-sidebar {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Устанавливаем панель на всю ширину экрана */
+.container-fluid {
+    width: 100%;
+    max-width: 2560px; /* Устанавливаем максимальную ширину для экрана 2K */
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.row.align-items-center {
+    width: 100%; /* Панель будет занимать всю доступную ширину */
+}
+
+/* Выравнивание элементов в правой части */
+.text-right {
+    display: flex;
+    justify-content: flex-end; /* Отодвигает элементы в правую часть */
+}
+
+/* Стили для кнопки "Выйти" */
+.logout-btn a {
+    color: #d9534f; /* Красный цвет для кнопки "Выйти" */
+}
+
+.main-nav {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+}
+
+    .main-nav .nav {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+        .main-nav .nav li {
+            list-style: none;
+        }
+
+            .main-nav .nav li a {
+                text-decoration: none;
+                color: #333;
+                font-weight: bold;
+            }
+
+                .main-nav .nav li a.active {
+                    color: #007bff;
+                }
+
+.user-nav {
+    display: flex;
+    gap: 15px; /* Добавляем промежутки между элементами */
+}
+
+    .user-nav li {
+        list-style: none;
+    }
+
+        .user-nav li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+/* Основной стиль для баннера */
+.main-banner {
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.7), rgba(0, 255, 255, 0.7)), url('https://via.placeholder.com/1920x800'); /* Фоновое изображение с градиентом */
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+    color: black;
+    text-align: left;
+    position: relative;
+    height: 40vh; /* Высота на весь экран */
+}
+
+/* Текст на баннере */
+.header-text {
+    max-width: 600px;
+}
+
+.welcome-text {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.main-heading {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Тень для текста */
+}
+
+.banner-description {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-size: 18px;
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-5px); /* Эффект при наведении */
+    }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .main-heading {
+        font-size: 36px;
+    }
+
+    .banner-description {
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        font-size: 16px;
+        padding: 10px 25px;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 1200px; /* Для больших экранов можно увеличить максимальную ширину */
+    }
+}
+
+.contact-section {
+    padding: 60px 0;
+}
+
+    .contact-section h2 {
+        font-size: 36px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+.contact-form {
+    background-color: #f8f9fa;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+    .contact-form .form-control {
+        border-radius: 5px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+    }
+
+    .contact-form button {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
+        }
+
+.map-container {
+    position: relative;
+    height: 400px;
+    margin-top: 40px;
+}
+
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+.contact-info {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+    .contact-info div {
+        text-align: center;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .contact-info i {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.contact-info div:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.contact-info div:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.contact-info div:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.social-links a {
+    font-size: 20px;
+    color: #007bff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+    .social-links a:hover {
+        color: #0056b3;
+    }
+
+/* Стили для секции товара */
+.product-details {
+    padding: 60px 0;
+}
+
+    .product-details .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .product-details .row {
+        display: flex;
+        align-items: center;
+    }
+
+    .product-details .product-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-details .col-lg-6 {
+        margin-bottom: 20px;
+    }
+
+    .product-details h3 {
+        font-size: 36px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .product-details .product-description {
+        font-size: 16px;
+        margin-top: 15px;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .product-details .product-price {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #28a745;
+    }
+
+    .product-details .add-to-cart {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+        .product-details .add-to-cart:hover {
+            background-color: #218838;
+        }
+
+    .product-details .text-danger {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+/* Мобильные стили */
+@media (max-width: 767px) {
+    .product-details .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-details .row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-details .product-image {
+        max-width: 80%;
+    }
+
+    .product-details h3 {
+        font-size: 28px;
+    }
+
+    .product-details .product-description {
+        font-size: 14px;
+    }
+
+    .product-details .product-price {
+        font-size: 20px;
+    }
+}
+
+/* Стиль для баннера */
+.product-banner {
+    background-color: #f0f0f0;
+    padding: 60px 0;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .product-banner h1 {
+        font-size: 40px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .product-banner p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    .product-banner .product-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+
+/* Описание товара */
+.product-details {
+    padding: 50px 0;
+}
+
+    .product-details h3 {
+        font-size: 32px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .product-details .product-description {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+
+    .product-details .product-price {
+        font-size: 24px;
+        font-weight: bold;
+        color: #e74c3c;
+        margin-bottom: 30px;
+    }
+
+    .product-details .add-to-cart {
+        padding: 12px 25px;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        .product-details .add-to-cart:hover {
+            background-color: #2ecc71;
+        }
+
+    .product-details .text-danger {
+        font-size: 16px;
+        color: #e74c3c;
+    }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .product-banner h1 {
+        font-size: 30px;
+    }
+
+    .product-details h3 {
+        font-size: 28px;
+    }
+
+    .product-details .product-description {
+        font-size: 14px;
+    }
+
+    .product-details .product-price {
+        font-size: 22px;
+    }
+}
+
+#success-banner {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: none;
+}
+
+.product-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    align-items: center;
+}
+
+.product-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+    .product-btn:hover {
+        background-color: #0056b3;
+    }
+
+.add-to-cart {
+    background-color: #28a745;
+}
+
+    .add-to-cart:hover {
+        background-color: #218838;
+    }
+
+@media (max-width: 768px) {
+    .product-card {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .product-title {
+        font-size: 16px;
+    }
+
+    .product-price {
+        font-size: 14px;
+    }
+}
+
+.create-product-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.main-content {
+    position: relative;
+}
+
+.shadow-box {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 60px;
+}

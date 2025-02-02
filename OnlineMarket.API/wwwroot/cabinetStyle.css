@@ -1,0 +1,136 @@
+﻿/* Основные стили для страницы */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+}
+
+/* Контейнер для содержимого */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Заголовки секций */
+.section-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .section-heading h2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+    }
+
+.line-dec {
+    width: 80px;
+    height: 3px;
+    background-color: #ff5733;
+    margin: 10px auto;
+}
+
+/* Карточка с формой */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    background-color: #ffffff;
+}
+
+/* Кнопки */
+.btn-primary {
+    background-color: #ff5733;
+    border-color: #ff5733;
+}
+
+    .btn-primary:hover {
+        background-color: #e04f2f;
+        border-color: #e04f2f;
+    }
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    border-color: #ddd;
+}
+
+    .btn-secondary:hover {
+        background-color: #e0e0e0;
+    }
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+.table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Поля ввода */
+.form-control {
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+/* Модальные окна */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #ddd;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-body {
+    font-size: 16px;
+    color: #555;
+}
+
+.modal-footer {
+    border-top: 2px solid #ddd;
+    padding-top: 15px;
+}
+
+    .modal-footer .btn-secondary {
+        background-color: #f0f0f0;
+        border-color: #ddd;
+    }
+
+        .modal-footer .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+    .modal-footer .btn-primary {
+        background-color: #ff5733;
+        border-color: #ff5733;
+    }
+
+        .modal-footer .btn-primary:hover {
+            background-color: #e04f2f;
+            border-color: #e04f2f;
+        }

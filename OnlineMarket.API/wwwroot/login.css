@@ -1,0 +1,152 @@
+/* General Reset */
+*,
+*:before,
+*:after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Background */
+html {
+    background: url(https://img.freepik.com/free-photo/vivid-blurred-colorful-background_58702-2655.jpg) no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form Container */
+form {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px 30px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    width: 400px;
+    position: relative;
+    animation: fadeIn 1s ease-in-out;
+}
+
+    form h3 {
+        text-align: center;
+        font-size: 32px;
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 30px;
+    }
+
+/* Input Fields */
+label {
+    display: block;
+    color: #fff;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 5px;
+    margin-top: 8px;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+    input:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+        outline: none;
+    }
+
+/* Submit Button */
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #ffffff;
+    color: #080710;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 30px;
+}
+
+    button:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+/* Register Link */
+.reg-button a {
+    display: block;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    margin-top: 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    .reg-button a:hover {
+        color: #007bff;
+    }
+
+/* Social Media Buttons */
+.social {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+    .social div {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 500;
+        margin: 0 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .social div:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+.error-message {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

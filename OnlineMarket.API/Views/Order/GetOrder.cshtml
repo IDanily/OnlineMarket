@@ -1,0 +1,62 @@
+﻿@using OnlineMarket.DataBase.Entites
+@model List<OrderProduct>
+
+<h2 class="text-center my-4">Корзина</h2>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info text-center" role="alert">
+        Ваша корзина пуста.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Изображение</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/Uploads/@item.Product.Picture" alt="@item.Product.Name" class="img-fluid" style="max-width: 50px; max-height: 50px;">
+                        </td>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Product.Price ₽</td>
+                        <td>
+                            <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control form-control-sm" style="width: 60px;">
+                                <button type="submit" class="btn btn-primary btn-sm mt-2">Обновить</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form asp-action="RemoveFromOrder" method="post">
+                                <input type="hidden" name="id" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
+        <h4>Общая сумма: <strong>@Model.Sum(item => item.Product.Price * item.Quantity) ₽</strong></h4>
+        <div>
+            <form asp-action="ClearOrder" method="post" class="d-inline">
+                <button type="submit" class="btn btn-warning btn-sm mr-2">Очистить корзину</button>
+            </form>
+            <a href="/Order/SubmitOrder" class="btn btn-success btn-sm">Перейти к оформлению</a>
+        </div>
+    </div>
+}

@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "Новости";
+}
+
+<!-- Main Content -->
+<main role="main" class="container">
+    <div class="news-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h1 class="section-title">Новости</h1>
+                    <p class="section-subtitle">Будьте в курсе последних событий и обновлений на нашем маркетплейсе</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="news-list mt-5">
+        <div class="container">
+            <div class="row">
+                <!-- News Item 1 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="news-item">
+                        <img src="~/assets/images/news1.jpg" alt="Новость 1" class="img-fluid">
+                        <div class="news-content">
+                            <h3 class="news-title">Новость 1: Обновление на платформе</h3>
+                            <p class="news-date">25 Января 2025</p>
+                            <p class="news-description">Мы рады сообщить, что наша платформа теперь поддерживает новые функции, улучшения и исправления ошибок. Ознакомьтесь с последними обновлениями.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Item 2 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="news-item">
+                        <img src="~/assets/images/news2.jpg" alt="Новость 2" class="img-fluid">
+                        <div class="news-content">
+                            <h3 class="news-title">Новость 2: Новый партнер на платформе</h3>
+                            <p class="news-date">20 Января 2025</p>
+                            <p class="news-description">Мы рады объявить о новом партнерстве с известным брендом, который теперь представлен на нашем маркетплейсе. Узнайте больше о нашем новом партнере.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Item 3 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="news-item">
+                        <img src="~/assets/images/news3.jpg" alt="Новость 3" class="img-fluid">
+                        <div class="news-content">
+                            <h3 class="news-title">Новость 3: Расширение ассортимента</h3>
+                            <p class="news-date">15 Января 2025</p>
+                            <p class="news-description">Мы расширили ассортимент товаров на нашем маркетплейсе. Теперь вы можете найти еще больше товаров по лучшим ценам.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Styles -->
+<style>
+    .news-banner {
+        background-color: #f8f9fa;
+        padding: 60px 0;
+        margin-bottom: 50px;
+        text-align: center;
+    }
+
+        .news-banner .section-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .news-banner .section-subtitle {
+            font-size: 18px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+    .news-list .news-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+        .news-list .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-list .news-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+    .news-list .news-content {
+        padding: 20px;
+    }
+
+    .news-list .news-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .news-list .news-date {
+        font-size: 14px;
+        color: #aaa;
+        margin-top: 5px;
+    }
+
+    .news-list .news-description {
+        font-size: 16px;
+        color: #555;
+        margin-top: 10px;
+        height: 80px;
+        overflow: hidden;
+    }
+
+    .news-list .btn-primary {
+        margin-top: 15px;
+    }
+</style>

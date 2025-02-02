@@ -1,0 +1,96 @@
+﻿@model OnlineMarket.API.ViewModels.ProductsListingModel
+@{
+    ViewData["Title"] = "Главная";
+}
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div class="main-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 align-self-center">
+                    <div class="header-text">
+                        <h6 class="welcome-text">Добро пожаловать на Маркетплейс</h6>
+                        <h2 class="main-heading">Лучшие товары в одном месте</h2>
+                        <p class="banner-description">Откройте для себя уникальные предложения и лучшие товары на нашем маркетплейсе. Удобный интерфейс и широкий выбор товаров для вас!</p>
+                        <a href="/Order/Index" class="btn btn-primary">Заказать сейчас</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ***** Products Section Start ***** -->
+    <section class="products">
+        <div class="container">
+            <div class="row">
+                <!-- Фильтр -->
+                <aside class="col-lg-3">
+                    <div class="filter-sidebar">
+                        <h5>Фильтр</h5>
+                        <form id="profileForm" method="post" action="@Url.Action("MainBase", "Home")">
+                            <!-- Категории -->
+                            <div class="form-group">
+                                <label for="CategoryId" class="form-label">Категория</label>
+                                <select class="form-control" id="Category" name="CategoryId" data-selected="@Model.Filter.CategoryId">
+                                    <option value="">Выберите категорию</option>
+                                </select>
+                            </div>
+                            <!-- Цена -->
+                            <div class="form-group">
+                                <label for="MinPrice">Минимальная цена</label>
+                                <input type="number" name="MinPrice" id="MinPrice" class="form-control" value="@Model.Filter.MinPrice" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="MaxPrice">Максимальная цена</label>
+                                <input type="number" name="MaxPrice" id="MaxPrice" class="form-control" value="@Model.Filter.MaxPrice" step="0.01">
+                            </div>
+                            <!-- Кнопки -->
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary btn-sm custom-btn">Применить</button>
+                                <button type="button" id="resetFilters" class="btn btn-secondary btn-sm custom-btn ml-2">Сбросить фильтры</button>
+                            </div>
+                        </form>
+                    </div>
+                </aside>
+
+
+                <!-- Товары -->
+                <div class="col-lg-9">
+                    <div id="productList" class="row">
+                        @foreach (var product in Model.Products)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                                <div class="product-card">
+                                    <img src="~/Uploads/@product.Picture" alt="@product.Name" class="product-image">
+                                    <h5 class="product-title">@product.Name</h5>
+                                    <p class="product-price">@product.Price.ToString("C")</p>
+                                    <div class="product-buttons">
+                                        <a href="/Product/GetProduct/@product.Id" class="btn btn-primary product-btn">Подробнее</a>
+                                        @if (Model.User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-success add-to-cart product-btn"
+                                               data-id="@product.Id"
+                                               data-name="@product.Name"
+                                               data-price="@product.Price"
+                                               data-quantity="1">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+    <!-- ***** Products Section End ***** -->
+</body>
+
+</html>

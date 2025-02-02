@@ -1,0 +1,134 @@
+﻿@model OnlineMarket.API.ViewModels.ProductsActionModel
+@{
+    ViewData["Title"] = "Страница товара";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f8f9fa;
+            --text-color: #212529;
+            --table-bg: #ffffff;
+        }
+
+        .dark-mode {
+            --primary-bg: #121212;
+            --secondary-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --table-bg: #222;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            transition: 0.3s ease;
+        }
+
+        .product-banner {
+            background: linear-gradient(135deg, #007bff, #6610f2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .product-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .table {
+            background: var(--table-bg);
+            color: var(--text-color);
+        }
+
+        .btn-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Баннер -->
+    <div class="product-banner">
+        <h1>@Model.Name</h1>
+        <p>Откройте для себя этот уникальный товар в нашем магазине.</p>
+    </div>
+
+    <section class="product-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="~/Uploads/@Model.PicturePath" alt="@Model.Name" class="product-image img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h3>@Model.Name</h3>
+                    <p><strong>Категория:</strong> @Model.CategoryName</p>
+                    <p><strong>Описание:</strong> @Model.Description</p>
+                    <p><strong>Цена:</strong> <span class="text-success">@Model.Price.ToString("C")</span></p>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <button class="btn btn-success">
+                            <i class="fas fa-cart-plus"></i> В корзину
+                        </button>
+                    }
+                    else
+                    {
+                        <p class="text-danger">Пожалуйста, войдите, чтобы добавить товар в корзину.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+@*     <!-- Таблица сравнения цен -->
+    <section class="product-price-comparison my-5">
+        <div class="container">
+            <h3 class="mb-4 text-center">Сравнение цен</h3>
+            <div class="table-responsive">
+                <table class="table table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Платформа</th>
+                            <th>Цена</th>
+                            <th>Ссылка</th>
+                            <th>Обновлено</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var price in Model.CompetitorPrices)
+                        {
+                            <tr>
+                                <td>@price.PlatformName</td>
+                                <td class="fw-bold text-success">@price.Price.ToString("C")</td>
+                                <td>
+                                    <a href="@price.Url" class="btn btn-primary btn-sm" target="_blank">
+                                        Перейти <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </td>
+                                <td>@price.LastUpdated.ToString("dd.MM.yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section> *@
+
+</body>
+</html>

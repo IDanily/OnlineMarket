@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc
+@model OnlineMarket.API.ViewModels.UserModel
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+@if (Model != null)
+{
+    <body>
+        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editUserModalLabel">Редактирование пользователя</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="@Url.Action("Update", "Users", new { id = Model.Id })" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="UserName" class="form-label">Логин</label>
+                                <input type="text" class="form-control" id="UserName" name="UserName" value="@Model.UserName" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="Password" class="form-label">Пароль</label>
+                                <input type="text" class="form-control" id="Password" name="Password" value="@Model.Password" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="Name" class="form-label">Имя</label>
+                                <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" />
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label asp-for="RoleName" class="control-label">Роль</label>
+                                    <select asp-for="RoleName" class="form-control" asp-items="Model.Roles">
+                                        <option value="">Выберите роль</option>
+                                    </select>
+
+                                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="justify-content: center;">
+                                <div class="col-lg-8">
+                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+}

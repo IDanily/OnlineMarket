@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model OnlineMarket.API.ViewModels.ProductsActionModel
+@if (Model != null)
+{
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteProductModalLabel">Удалить товар</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="@Url.Action("DeleteProduct", "Product", new { id = Model.Id })">
+                        <div class="alert alert-danger" role="alert">
+                            Вы уверены что хотите удалить товар <strong>@Model.Name</strong>?
+                        </div>
+                        <div class="row" style="justify-content: center;">
+                            <div class="col-lg-6">
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt mr-1"></i>Удалить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

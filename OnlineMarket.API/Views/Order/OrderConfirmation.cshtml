@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Подтверждение заказа";
+}
+
+@if (TempData["OrderSuccess"] != null && (bool)TempData["OrderSuccess"])
+{
+    <div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-labelledby="orderSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderSuccessModalLabel">Заказ успешно оформлен!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Ваш заказ был успешно оформлен. Мы свяжемся с вами в ближайшее время.
+                </div>
+                <div class="modal-footer">
+                    <a href="@Url.Action("MainBase", "Home")" class="btn btn-primary">Вернуться на главную</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

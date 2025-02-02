@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="templatemo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <title>@ViewData["Title"] - Маркетплейс</title>
+
+    <!-- Bootstrap core CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="~/styles.css">
+
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Owl Carousel JS -->
+    <script src="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f8f9fa;
+            --text-color: #212529;
+            --table-bg: #ffffff;
+        }
+
+        .dark-mode {
+            --primary-bg: #121212;
+            --secondary-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --table-bg: #222;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            transition: 0.3s ease;
+        }
+
+        .product-banner {
+            background: linear-gradient(135deg, #007bff, #6610f2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .product-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .table {
+            background: var(--table-bg);
+            color: var(--text-color);
+        }
+
+        .btn-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Кнопка переключения темы -->
+@*     <button class="btn-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="theme-icon"></i>
+    </button> *@
+
+    <!-- Header -->
+    <header>
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-3">
+                    <a href="/Home/MainBase" class="logo">
+                        <img src="~/assets/images/logo-marketplace.png" alt="Маркетплейс">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <form class="search-bar d-flex" method="post" action="@Url.Action("MainBase", "Home")">
+                        <input type="text" class="form-control" name="query" id="query" placeholder="Искать товары, категории..." value="@ViewData["SearchQuery"]">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-3 text-right d-flex justify-content-end">
+                    <ul class="nav user-nav">
+                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li><a href="/Users/Cabinet"><i class="fas fa-user"></i> Личный кабинет</a></li>
+                            <li><a href="/Order/GetOrder"><i class="fas fa-shopping-cart"></i> Корзина @await Component.InvokeAsync("Order")</a></li>
+                            <li class="logout-btn"><a href="/Authorization/Logout"><i class="fas fa-sign-out-alt"></i> Выйти</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/Authorization/Login"><i class="fas fa-sign-in-alt"></i> Войти</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container-fluid">
+                <ul class="nav">
+                    <li><a href="/Home/MainBase" id="home-link">Главная</a></li>
+                    @if (User?.IsInRole("seller") == true || User?.IsInRole("admin") == true)
+                    {
+                        <li><a href="/Product/ProductList" id="product-link">Продукты</a></li>
+                    }
+                    <li><a href="/Home/News" id="news-link">Новости</a></li>
+                    <li><a href="/Home/Contacts" id="contact-link">Контакты</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="wrapper">
+        <!-- Main content goes here -->
+        <main role="main" class="container main-content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white pt-4 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <h5>О компании</h5>
+                    <ul>
+                        <li><a href="#" class="text-white">О нас</a></li>
+                        <li><a href="/Home/Contacts" class="text-white">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Покупателям</h5>
+                    <ul>
+                        <li><a href="#" class="text-white">Помощь</a></li>
+                        <li><a href="#" class="text-white">Условия использования</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Следите за нами</h5>
+                    <ul class="social-links">
+                        <li><a href="#" class="text-white"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href="#" class="text-white"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Контакты</h5>
+                    <p>г. Тирасполь, ул. Восстания, 2а<br>Телефон: (+373)533-74342<br>Email: itidir@spsu.ru</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>© 2024 Маркетплейс. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="success-banner" class="alert alert-success">
+        Товар успешно добавлен в корзину!
+    </div>
+
+    <div id="categoryUrl" data-url="@Url.Action("List", "Category")" style="display:none;"></div>
+
+    <script src="~/mainScripts.js"></script>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            document.getElementById("theme-icon").classList = isDark ? "fas fa-sun" : "fas fa-moon";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-mode");
+                document.getElementById("theme-icon").classList = "fas fa-sun";
+            }
+        });
+    </script>
+</body>
+
+</html>

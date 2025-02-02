@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model OnlineMarket.API.ViewModels.CabinetModel
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="~/cabinetStyle.css">
+</head>
+<body>
+    <div class="container my-5 shadow-box">
+        <!-- Личный профиль -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Редактирование профиля</h2>
+                    <div class="line-dec"></div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="profileForm" method="post" action="@Url.Action("Update", "Users", new { id = Model.UserAutorize.Id, roleName = Model.UserAutorize.RoleName })">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-xl-4">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input type="text" class="form-control" name="email" id="email" placeholder="Почта" value="@Model.UserAutorize.Email" required />
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <label class="form-label" for="password">Пароль</label>
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="Пароль" />
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <label class="form-label" for="name">Имя</label>
+                                        <input type="text" class="form-control" name="Name" id="name" placeholder="Имя" value="@Model.UserAutorize.Name" required />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <button type="submit" class="btn btn-primary mt-4">Обновить</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблицы для администратора -->
+        @if (Model != null && Model.IsAdmin)
+        {
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Пользователи</h2>
+                        <div class="line-dec"></div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Имя</th>
+                                <th>Роль</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td>@user.Name</td>
+                                    <td>@user.RoleName</td>
+                                    <td>
+                                        <a href="@Url.Action("Update", "Users", new { id = user.Id })"
+                                           class="btn btn-warning btn-sm"
+                                           data-toggle="modal"
+                                           data-target="editUserModal"
+                                           data-type="edit">Редактировать</a>
+
+                                        <a href="@Url.Action("Delete", "Users", new { id = user.Id })"
+                                           class="btn btn-danger btn-sm"
+                                           data-toggle="modal"
+                                           data-target="deleteUserModal"
+                                           data-type="delete">Удалить</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @if(Model != null && (Model.IsModer || Model.IsAdmin))
+        {
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Сводная информация по заказам</h2>
+                        <div class="line-dec"></div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <table class="table table-bordered" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Название товара</th>
+                                <th>Количество продано</th>
+                                <th>Общая сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.SellerOrders)
+                            {
+                                <tr>
+                                    <td>@order.ProductName</td>
+                                    <td>@order.Quantity</td>
+                                    <td>@order.TotalAmount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <form action="@Url.Action("GenerateExcel", "Users")" method="get">
+                        <div class="text-center mt-5">
+                            <button type="submit" class="btn btn-success">Сгенерировать отчет в Excel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</body>
+</html>

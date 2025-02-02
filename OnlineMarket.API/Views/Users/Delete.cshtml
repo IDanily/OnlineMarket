@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model OnlineMarket.API.ViewModels.UserModel
+@if (Model != null)
+{
+    <body>
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUserModalLabel">Удаление пользователя</h5>
+                        <button type="button" class="btn-close" data-ds-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="@Url.Action("Delete", "Users", new { id = Model.Id })">
+                            <div class="alert alert-danger" role="alert">
+                                Вы уверены что хотите удалить пользователя <strong>@Model.Name</strong>?
+                            </div>
+                            <div class="row" style="justify-content: center;">
+                                <div class="col-lg-6">
+                                    <button type="button" class="btn btn-dark" data-ds-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt mr-1"></i>Удалить</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+}

@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Новости";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<body>
+
+    <!-- Контакты -->
+    <section class="contact-section">
+        <div class="container">
+            <h2>Контакты</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="contact-form">
+                        <h4>Напишите нам в телеграмм</h4>
+                        <form method="post" action="/Home/SendMessage">
+                            <div class="form-group">
+                                <input type="text" name="name" class="form-control" placeholder="Ваше имя" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="message" class="form-control" rows="4" placeholder="Сообщение" required></textarea>
+                            </div>
+                            <button type="submit">Отправить сообщение</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21831.368398362665!2d29.58473022647313!3d46.84524408214331!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c902e8fd3f4cbf%3A0xfffe2ce60be34818!2z0KLQuNGA0LDRgdC_0L7Qu9GM!5e0!3m2!1sru!2s!4v1738118074912!5m2!1sru!2s" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <div>
+                    <i class="fas fa-phone"></i>
+                    <p>Телефон: (+373)533-74342</p>
+                </div>
+                <div>
+                    <i class="fas fa-envelope"></i>
+                    <p>Email: itidir@spsu.ru</p>
+                </div>
+                <div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Адрес: г. Тирасполь, ул. Восстания, 2а</p>
+                </div>
+            </div>
+
+            <div class="social-links text-center">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

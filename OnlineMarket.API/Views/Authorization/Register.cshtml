@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="~/login.css">
+    <title>Регистрация</title>
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form action="/Authorization/Register" method="post" class="register-form">
+        <h3>Регистрация</h3>
+
+        <!-- Блок для отображения ошибок -->
+        @if (ViewData["ErrorMessage"] != null)
+        {
+            <div class="error-message">
+                <p>@ViewData["ErrorMessage"]</p>
+            </div>
+        }
+
+        <label for="username">Логин</label>
+        <input type="text" placeholder="Логин" name="UserName" id="userName" required>
+
+        <label for="password">Пароль</label>
+        <input type="password" placeholder="Пароль" name="Password" id="password" required>
+
+        <label for="name">Имя</label>
+        <input type="text" placeholder="Имя" name="Name" id="name" required>
+
+        <label for="email">Email</label>
+        <input type="text" placeholder="Почти" name="Email" id="email" required>
+
+        <button type="submit">Зарегистрироваться</button>
+
+        <div class="reg-button">
+            <a href="/Authorization/Login" target="_blank">Уже есть аккаунт? Войти</a>
+        </div>
+    </form>
+</body>
+</html>
