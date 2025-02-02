@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using OnlineMarket.Application.Services;
 using OnlineMarket.Core.Abstractions;
 using OnlineMarket.Core.Models;
@@ -8,12 +9,6 @@ using OnlineMarket.DataBase;
 using OnlineMarket.DataBase.Entites;
 using OnlineMarket.DataBase.Repositories;
 using OnlineMarket.DataBase.Reposotories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using OnlineMarket.DataBase;
-using OnlineMarket.Core.Models;
-using OfficeOpenXml;
-using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {

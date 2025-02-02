@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineMarket.Core.Abstractions;
 using OnlineMarket.Core.Models;
 using OnlineMarket.DataBase.Entites;
