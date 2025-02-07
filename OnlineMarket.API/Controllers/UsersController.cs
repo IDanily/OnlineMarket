@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeOpenXml;
 using OnlineMarket.API.ViewModels;
 using OnlineMarket.Application.Services;
 using OnlineMarket.Core.Abstractions;
 using OnlineMarket.Core.Models;
 using OnlineMarket.DataBase;
+using OnlineMarket.DataBase.Entites;
 
 namespace OnlineMarket.API.Controllers
 {
@@ -39,9 +40,9 @@ namespace OnlineMarket.API.Controllers
                 UserAutorize = user,
                 Users = users,
                 Products = products,
-                SellerOrders = GetOrdersForSellerAsync(user.Id).Result,
+                SellerOrders = GetOrdersForSeller(user.Id),
                 IsAdmin = HttpContext.User.IsInRole("admin"),
-                IsModer = HttpContext.User.IsInRole("moder")
+                IsSeller = HttpContext.User.IsInRole("seller")
             };
 
             return View(model);
@@ -65,7 +66,11 @@ namespace OnlineMarket.API.Controllers
                         users.Name = model.Name;
 
                     if (model.Password != null)
-                        users.Password = model.Password;
+                    {
+                        // Хэшируем новый пароль
+                        var passwordHasher = new PasswordHasher<Users>();
+                        users.Password = passwordHasher.HashPassword(null, model.Password);
+                    }
 
                     if (roleUser != null)
                         users.Role = role != null ? role : roleUser;
@@ -99,7 +104,6 @@ namespace OnlineMarket.API.Controllers
                 model.Id = users.Id;
                 model.UserName = users.UserName;
                 model.Name = users.Name;
-                model.Password = users.Password;
                 model.RoleName = role.Name;
                 model.Email = users.Email;
                 model.Roles = roles;
@@ -121,13 +125,21 @@ namespace OnlineMarket.API.Controllers
         [HttpPost]
         public ActionResult Delete(UserModel model)
         {
-            var users = _usersService.GetAllUsers().Result.FirstOrDefault(_ => _.Id == model.Id);
-            _usersService.DeleteUser(users.Id);
+            var users = _context.Users.Include(_ => _.Products).FirstOrDefault(_ => _.Id == model.Id);
+
+            if (users != null)
+            {
+                users.Products.Clear();
+
+                _context.Remove<UsersEntity>(users);
+
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Cabinet");
         }
 
-        public async Task<List<OrderSummary>> GetOrdersForSellerAsync(int sellerId)
+        public List<OrderSummary> GetOrdersForSeller(int sellerId)
         {
             List<OrderSummary> productsDb = _context.OrderProducts
                 .Include(o => o.Product)
@@ -148,7 +160,7 @@ namespace OnlineMarket.API.Controllers
         {
             var userAutorize = HttpContext.User;
             var user = _usersService.GetAllUsers().Result.Where(_ => _.UserName == userAutorize.Identity.Name).FirstOrDefault();
-            var orders = GetOrdersForSellerAsync(user.Id).Result;
+            var orders = GetOrdersForSeller(user.Id);
 
             using (var package = new ExcelPackage())
             {

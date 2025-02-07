@@ -200,7 +200,7 @@ namespace OnlineMarket.API.Controllers
             model.Price = product.Price;
             model.PicturePath = product.Picture;
 
-            //model.CompetitorPrices = await _priceService.GetCompetitorPricesAsync(product.Name);
+            model.CompetitorPrices = await _priceService.GetCompetitorPricesAsync(product.Name);
 
             return View("GetProduct", model);
         }

@@ -8,7 +8,7 @@ namespace OnlineMarket.API.ViewModels
         public List<UserModel> Users { get; set; }
         public UserModel UserAutorize { get; set; }
         public bool IsAdmin { get; set; }
-        public bool IsModer { get; set; }
+        public bool IsSeller { get; set; }
         public List<OrderSummary> SellerOrders { get; set; }
     }
 

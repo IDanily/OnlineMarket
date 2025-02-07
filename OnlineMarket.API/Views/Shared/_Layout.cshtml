@@ -25,7 +25,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <style>
         :root {
             --primary-bg: #ffffff;
@@ -187,21 +186,6 @@
 
     <script src="~/mainScripts.js"></script>
 
-    <script>
-        function toggleTheme() {
-            document.body.classList.toggle("dark-mode");
-            const isDark = document.body.classList.contains("dark-mode");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-            document.getElementById("theme-icon").classList = isDark ? "fas fa-sun" : "fas fa-moon";
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            if (localStorage.getItem("theme") === "dark") {
-                document.body.classList.add("dark-mode");
-                document.getElementById("theme-icon").classList = "fas fa-sun";
-            }
-        });
-    </script>
 </body>
 
 </html>

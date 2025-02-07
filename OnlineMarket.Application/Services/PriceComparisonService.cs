@@ -19,10 +19,10 @@ namespace OnlineMarket.Application.Services
             var tasks = new List<Task<CompetitorPrice>>
             {
                 ParseYandexMarket(productName),
-                //ParseAliExpress(productName),
-                //ParseOzon(productName),
-                //ParseWildberries(productName),
-                //ParseDNS(productName)
+                ParseAliExpress(productName),
+                ParseOzon(productName),
+                ParseWildberries(productName),
+                ParseDNS(productName)
             };
 
             var results = await Task.WhenAll(tasks);
@@ -38,153 +38,162 @@ namespace OnlineMarket.Application.Services
 
         private async Task<CompetitorPrice> ParseYandexMarket(string productName)
         {
-            var searchUrl = $"https://api.market.yandex.ru/v2/products.json?text={Uri.EscapeDataString(productName)}&client_id=ecb95142a8f54d7382ad7c48863f193c&client_secret=2fb29b8c62ea4396b07f68a5f7a9b719";
+            return new CompetitorPrice
+            { 
+                PlatformName = "Яндекс.Маркет", 
+                Url = "https://market.yandex.ru/",
+                LastUpdated = DateTime.UtcNow
+            };
+            //var searchUrl = $"https://yandex.ru/products/api/ext/partner/feeds-info";
+            //var newCompetitorPrice = new CompetitorPrice();
+            //try
+            //{
+            //    using (var client = new HttpClient())
+            //    {
+            //        client.DefaultRequestHeaders.Add("Authorization", $"OAuth y0__xCXgdihARjl8DQgtrSHlxLntd4vRwkGt-F8jK5eES78IjCvEg");
+            //        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-            try
-            {
-                var client = new HttpClient();
-                var response = await client.GetStringAsync(searchUrl);
-                var products = JsonConvert.DeserializeObject<dynamic>(response);
+            //        var response = await client.GetAsync(searchUrl);
 
-                // Примерный парсинг ответа, в зависимости от формата
-                var firstProduct = products?.items[0];
+            //        if (!response.IsSuccessStatusCode)
+            //        {
+            //            newCompetitorPrice.PlatformName = $"Ошибка: {response}";
+            //            return newCompetitorPrice;
+            //        }
 
-                if (firstProduct != null)
-                {
-                    decimal price = firstProduct.price.value;
-                    string productLink = firstProduct.link;
+            //        string responseInfo = await response.Content.ReadAsStringAsync();
 
-                    return new CompetitorPrice
-                    {
-                        PlatformName = "Яндекс.Маркет",
-                        Price = price,
-                        Url = productLink,
-                        LastUpdated = DateTime.UtcNow
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при получении данных с Яндекс.Маркет: {ex.Message}");
-            }
+            //        var products = JsonConvert.DeserializeObject<dynamic>(responseInfo);
 
-            return null;
-        }
+            //        if (products != null)
+            //        {
+            //            newCompetitorPrice.PlatformName = $"Product: {products}";
+            //            return newCompetitorPrice;
+            //        }
 
-        public class ProductList
-        {
-            public List<ProductItem> Items { get; set; }  // Список товаров
+            //        var firstProduct = products?.products[0];
 
-            public ProductList()
-            {
-                Items = new List<ProductItem>();
-            }
-        }
+            //        if (firstProduct != null)
+            //        {
+            //            decimal price = firstProduct.price.value;
+            //            string productLink = firstProduct.url;
 
-        public class ProductItem
-        {
-            public string Title { get; set; }  // Название товара
-            public decimal Price { get; set; }  // Цена товара
-            public string Url { get; set; }  // Ссылка на товар
-            public string ImageUrl { get; set; }  // URL изображения товара
-            public string SellerName { get; set; }  // Название продавца (для AliExpress)
-            public string Brand { get; set; }  // Бренд товара (для Ozon, Wildberries)
+            //            newCompetitorPrice.PlatformName = "Яндекс.Маркет";
+            //            newCompetitorPrice.Price = price;
+            //            newCompetitorPrice.Url = productLink;
+            //            newCompetitorPrice.LastUpdated = DateTime.Now;
+            //            return newCompetitorPrice;
+            //        }
+            //        else
+            //        {
+            //            newCompetitorPrice.PlatformName = "Яндекс.Маркет не нашел такой продукт";
+            //            return newCompetitorPrice;
+            //        }
+            //    }
+            //}
+            //catch (HttpRequestException ex)
+            //{
+            //    newCompetitorPrice.PlatformName = $"Ошибка при отправке запроса: {ex.Message}";
+            //    return newCompetitorPrice;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Ошибка при получении данных с Яндекс.Маркет: {ex.Message}");
+            //}
+
+            //return null;
         }
 
         private async Task<CompetitorPrice> ParseAliExpress(string productName)
         {
-            string searchUrl = $"https://www.aliexpress.com/wholesale?SearchText={Uri.EscapeDataString(productName)}";
+            //string searchUrl = $"https://www.aliexpress.com/wholesale?SearchText={Uri.EscapeDataString(productName)}";
 
-            var web = new HtmlWeb();
-            var doc = await web.LoadFromWebAsync(searchUrl);
+            //var web = new HtmlWeb();
+            //var doc = await web.LoadFromWebAsync(searchUrl);
 
-            var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'list-item')]");
-            if (productNode == null) return null;
+            //var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'list-item')]");
+            //if (productNode == null) return null;
 
-            var priceNode = productNode.SelectSingleNode(".//span[contains(@class, 'price')]");
-            var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'title')]");
+            //var priceNode = productNode.SelectSingleNode(".//span[contains(@class, 'price')]");
+            //var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'title')]");
 
-            if (priceNode == null || linkNode == null) return null;
+            //if (priceNode == null || linkNode == null) return null;
 
             return new CompetitorPrice
             {
                 PlatformName = "AliExpress",
-                Price = decimal.Parse(priceNode.InnerText.Replace("$", "").Replace(",", ".")),
-                Url = "https://" + linkNode.GetAttributeValue("href", "").TrimStart('/'),
+                Url = "https://aliexpress.ru/?spm=a2g2w.productlist.logo.1.715aa6a2a23OFZ",
                 LastUpdated = DateTime.UtcNow
             };
         }
 
         private async Task<CompetitorPrice> ParseOzon(string productName)
         {
-            string searchUrl = $"https://www.ozon.ru/search/?text={Uri.EscapeDataString(productName)}";
+            //    string searchUrl = $"https://www.ozon.ru/search/?text={Uri.EscapeDataString(productName)}";
 
-            var web = new HtmlWeb();
-            var doc = await web.LoadFromWebAsync(searchUrl);
+            //    var web = new HtmlWeb();
+            //    var doc = await web.LoadFromWebAsync(searchUrl);
 
-            var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'tile')]");
+            //    var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'tile')]");
 
-            if (productNode == null) return null;
+            //    if (productNode == null) return null;
 
-            var priceNode = productNode.SelectSingleNode(".//span[contains(@class, 'price')]");
-            var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'tile-hover-target')]");
+            //    var priceNode = productNode.SelectSingleNode(".//span[contains(@class, 'price')]");
+            //    var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'tile-hover-target')]");
 
-            if (priceNode == null || linkNode == null) return null;
+            //    if (priceNode == null || linkNode == null) return null;
 
             return new CompetitorPrice
             {
                 PlatformName = "Ozon",
-                Price = decimal.Parse(priceNode.InnerText.Replace(" ", "").Replace("₽", "")),
-                Url = "https://www.ozon.ru" + linkNode.GetAttributeValue("href", ""),
+                Url = "https://www.ozon.ru",
                 LastUpdated = DateTime.UtcNow
             };
         }
 
         private async Task<CompetitorPrice> ParseWildberries(string productName)
         {
-            string searchUrl = $"https://www.wildberries.ru/catalog/0/search.aspx?search={Uri.EscapeDataString(productName)}";
+            //string searchUrl = $"https://www.wildberries.ru/catalog/0/search.aspx?search={Uri.EscapeDataString(productName)}";
 
-            var web = new HtmlWeb();
-            var doc = await web.LoadFromWebAsync(searchUrl);
+            //var web = new HtmlWeb();
+            //var doc = await web.LoadFromWebAsync(searchUrl);
 
-            var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'product-card')]");
+            //var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'product-card')]");
 
-            if (productNode == null) return null;
+            //if (productNode == null) return null;
 
-            var priceNode = productNode.SelectSingleNode(".//ins[contains(@class, 'price')]");
-            var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'card__link')]");
+            //var priceNode = productNode.SelectSingleNode(".//ins[contains(@class, 'price')]");
+            //var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'card__link')]");
 
-            if (priceNode == null || linkNode == null) return null;
+            //if (priceNode == null || linkNode == null) return null;
 
             return new CompetitorPrice
             {
                 PlatformName = "Wildberries",
-                Price = decimal.Parse(priceNode.InnerText.Replace(" ", "").Replace("₽", "")),
-                Url = "https://www.wildberries.ru" + linkNode.GetAttributeValue("href", ""),
+                Url = "https://www.wildberries.ru",
                 LastUpdated = DateTime.UtcNow
             };
         }
         private async Task<CompetitorPrice> ParseDNS(string productName)
         {
-            string searchUrl = $"https://www.dns-shop.ru/search/?q={Uri.EscapeDataString(productName)}";
+            //string searchUrl = $"https://www.dns-shop.ru/search/?q={Uri.EscapeDataString(productName)}";
 
-            var web = new HtmlWeb();
-            var doc = await web.LoadFromWebAsync(searchUrl);
+            //var web = new HtmlWeb();
+            //var doc = await web.LoadFromWebAsync(searchUrl);
 
-            var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'catalog-product')]");
+            //var productNode = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'catalog-product')]");
 
-            if (productNode == null) return null;
+            //if (productNode == null) return null;
 
-            var priceNode = productNode.SelectSingleNode(".//div[contains(@class, 'product-buy__price')]");
-            var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'catalog-product__name')]");
+            //var priceNode = productNode.SelectSingleNode(".//div[contains(@class, 'product-buy__price')]");
+            //var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'catalog-product__name')]");
 
-            if (priceNode == null || linkNode == null) return null;
+            //if (priceNode == null || linkNode == null) return null;
 
             return new CompetitorPrice
             {
                 PlatformName = "DNS",
-                Price = decimal.Parse(priceNode.InnerText.Replace(" ", "").Replace("₽", "")),
-                Url = "https://www.dns-shop.ru" + linkNode.GetAttributeValue("href", ""),
+                Url = "https://www.dns-shop.ru",
                 LastUpdated = DateTime.UtcNow
             };
         }

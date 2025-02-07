@@ -7,7 +7,6 @@ namespace OnlineMarket.API.Contacts
             string userName,
             string name,
             string password,
-            Role role,
         string roleName,
         string email);
 }

@@ -13,7 +13,6 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="~/login.css">
     <title>Вход</title>
-    <script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"></script>
 </head>
 <body>
     <div class="background"></div>
@@ -45,53 +44,10 @@
 
     <!-- Social login icons -->
     <div class="social">
-        <div id="buttonContainerId"></div>
+        <!-- Это будет кнопка авторизации, которую Яндекс генерирует, или любая ваша кнопка -->
+        <button id="yandexAuthButton" class="yandex-button">Y</button>
     </div>
 
-    <script>
-        window.YaAuthSuggest.init(
-            {
-                client_id: "818138e68e80463b8cbd7f0defa29be8",  // Ваш client_id
-                response_type: "token",
-                redirect_uri: "http://magazin.somee.com/Authorization/AuthenticateWithYandex"
-            },
-            "https://oauth.yandex.ru",
-            {
-                view: "button",  // Тип отображения кнопки
-                parentId: "buttonContainerId",  // Контейнер, в который будет вставлена кнопка
-                buttonSize: 'l',  // Размер кнопки
-                buttonView: 'iconBg',  // Тип кнопки с иконкой
-                buttonTheme: 'dark',  // Тема кнопки
-                buttonBorderRadius: "0",  // Скругление углов
-                buttonIcon: 'ya',  // Иконка кнопки (языковая иконка Яндекс)
-            }
-        )
-        .then(({handler}) => {
-            console.log('Инициализация прошла успешно, подключение обработчика');
-            const yaButton = document.getElementById('buttonContainerId');
-            if (yaButton) {
-                yaButton.addEventListener('click', function() {
-                    console.log('Кнопка Яндекс нажата');
-                    handler().then(data => {
-                        console.log('Ответ от Яндекса:', data);  // Логируем ответ от Яндекса
-                        if (data && data.access_token) {
-                            console.log('Токен получен:', data.access_token);
-                            // Перенаправляем на сервер с токеном
-                            window.location.href = `/Authorization/AuthenticateWithYandex?token=${data.access_token}`;
-                        } else {
-                            console.log('Ошибка: Токен не получен');
-                        }
-                    }).catch(error => {
-                        console.log('Ошибка авторизации через Яндекс:', error);
-                    });
-                });
-            } else {
-                console.log('Кнопка Яндекс не найдена');
-            }
-        })
-        .catch(error => {
-            console.log('Ошибка инициализации Яндекс авторизации:', error);
-        });
-    </script>
+    <script src="~/login.js"></script>
 </body>
 </html>

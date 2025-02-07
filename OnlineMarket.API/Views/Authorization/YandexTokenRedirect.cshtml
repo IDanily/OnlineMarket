@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null; // Отключаем макет, чтобы страница была пустой
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Перенаправление...</title>
+    <script>
+        (function () {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const token = params.get("access_token");
+
+            if (token) {
+                if (window.opener) {
+                    // Передаем токен в основное окно
+                    window.opener.postMessage({ access_token: token }, "*");
+                    window.close(); // Закрываем всплывающее окно
+                } else {
+                    // Если открыто не во всплывающем окне — редиректим
+                    window.location.href = `/Authorization/AuthenticateWithYandex?access_token=${token}`;
+                }
+            } else {
+                document.body.innerHTML = "<h2>Ошибка авторизации</h2><p>Попробуйте снова.</p>";
+            }
+        })();
+    </script>
+
+</head>
+<body>
+    <h2>Авторизация через Яндекс...</h2>
+</body>
+</html>

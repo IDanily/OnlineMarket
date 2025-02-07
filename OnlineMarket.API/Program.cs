@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml;
 using OnlineMarket.Application.Services;
 using OnlineMarket.Core.Abstractions;
 using OnlineMarket.Core.Models;
@@ -10,15 +9,11 @@ using OnlineMarket.DataBase.Entites;
 using OnlineMarket.DataBase.Repositories;
 using OnlineMarket.DataBase.Reposotories;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    Args = args,
-    WebRootPath = "wwwroot"
-});
+var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllersWithViews();
 
-ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
+// Настройка аутентификации с использованием cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
     x =>
     {
@@ -27,7 +22,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         x.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Authorization/Login");
     });
 
+// Добавление MVC
 builder.Services.AddMvc();
+
+// Добавление сервисов
 builder.Services.AddSingleton<TelegramService>();
 builder.Services.AddScoped<IEntityService<Product>, ProductService>();
 builder.Services.AddScoped<IEntityRepository<Product>, ProductRepository>();
@@ -38,6 +36,7 @@ builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IPriceComparison, PriceComparisonService>();
 builder.Services.AddHttpClient();
 
+// Подключение к базе данных
 builder.Services.AddDbContext<MarketStoreDbContext>(option =>
 {
     option.UseSqlServer("workstation id=OnlineMarket.mssql.somee.com;packet size=4096;user id=danilklec_SQLLogin_1;pwd=bk99h1gtz5;data source=OnlineMarket.mssql.somee.com;persist security info=False;initial catalog=OnlineMarket;TrustServerCertificate=True");
@@ -45,35 +44,7 @@ builder.Services.AddDbContext<MarketStoreDbContext>(option =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        await InitializeDatabase(services, isDevelopment: true);
-    }
-}
-
-app.UseCors(options =>
-        options.WithOrigins("https://magazin.somee.com")
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials());
-
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
-        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-        if (exceptionHandlerPathFeature?.Error != null)
-        {
-            await context.Response.WriteAsync($"Error: {exceptionHandlerPathFeature.Error.Message}");
-        }
-    });
-});
-app.UseHsts();
-app.UseHttpsRedirection();
-
+// Контентная безопасность
 app.Use(async (context, next) =>
 {
     context.Response.Headers.Append("Content-Security-Policy",
@@ -81,23 +52,31 @@ app.Use(async (context, next) =>
     await next();
 });
 
+// Статические файлы
 app.UseStaticFiles();
+// Маршрутизация
+app.UseRouting();
+// Аутентификация и авторизация
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseRouting();
+
 app.MapGet("/", () => Results.Redirect("/Home/MainBase"));
+
+// Основной маршрут
 app.MapControllerRoute(
     name: "Default",
     pattern: "{controller=Home}/{action=MainBase}"
     );
 
+// Маршрут для продуктов
 app.MapControllerRoute(
     name: "product",
     pattern: "Product/GetProduct/{id}",
     defaults: new { controller = "Product", action = "GetProduct" });
 
+// Маршрут для заказов
 app.MapControllerRoute(
-    name: "product",
+    name: "order",
     pattern: "Order/GetOrder",
     defaults: new { controller = "Order", action = "GetOrder" });
 

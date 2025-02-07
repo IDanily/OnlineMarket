@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using OnlineMarket.API.Contacts;
 using OnlineMarket.Application.Services;
@@ -60,38 +63,9 @@ namespace OnlineMarket.API.Controllers
             return RedirectToAction("MainBase", "Home");
         }
 
-        [HttpPost]
-        public bool CheckLogin([FromForm] UsersRequest user)
-        {
-            var item = _context.Users.Where(x => x.UserName == user.userName && x.Password == user.password).FirstOrDefault();
-            if (item != null)
-                return true;
-            else
-                return false;
-        }
-
-        [HttpPost]
-        public async Task<bool> Registered([FromForm] UsersRequest user)
-        {
-            var item = _context.Users.Where(x => x.UserName == user.userName && x.Password == user.password || x.UserName == user.userName).FirstOrDefault();
-
-            if (item != null)
-                return false;
-
-            var roleEntites = _context.Roles.FirstOrDefault(_ => _.Name == "user");
-
-            var newUser = Users.Create(user.userName, user.name, user.password, roleEntites.Id, user.email).Users;
-            await _usersService.CreateUser(newUser);
-
-            if (newUser != null)
-                return true;
-            else
-                return false;
-        }
-
         private async Task Authenticate(UsersRequest user)
         {
-            var item = _context.Users.Where(x => x.UserName == user.userName && x.Password == user.password).FirstOrDefault();
+            var item = _context.Users.Where(x => x.UserName == user.userName).FirstOrDefault();
             var role = _context.Roles.Where(x => x.Id == item.RoleId).FirstOrDefault();
 
             // создаем один claim
@@ -107,9 +81,9 @@ namespace OnlineMarket.API.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
-        private async Task Authenticate(UsersEntity user)
+        private async Task Authenticate(Users user)
         {
-            var item = _context.Users.Where(x => x.UserName == user.UserName && x.Password == user.Password).FirstOrDefault();
+            var item = _context.Users.Where(x => x.UserName == user.UserName).FirstOrDefault();
             var role = _context.Roles.Where(x => x.Id == item.RoleId).FirstOrDefault();
 
             // создаем один claim
@@ -129,115 +103,158 @@ namespace OnlineMarket.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromForm] UsersRequest user)
         {
-            bool IsSuccess = CheckLogin(user);
-            if (IsSuccess)
+            if (user == null || string.IsNullOrEmpty(user.userName) || string.IsNullOrEmpty(user.password))
             {
-                var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name,"ClaimName")
-                    };
-
-                var useridentity = new ClaimsIdentity(claims, "Login");
-                ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
-
-
-                await HttpContext.SignInAsync(principal);
-                await Authenticate(user);
-
-                return RedirectToAction("MainBase", "Home");
-            }
-            else if (user != null)
-            {
-                if (user.password == null)
-                    ViewData["ErrorMessage"] = "Неверный пароль.";
-
-                if (user.userName == null)
-                    ViewData["ErrorMessage"] = "Неверный логин.";
-
+                ViewData["ErrorMessage"] = "Пожалуйста, заполните все поля.";
                 return View();
             }
-            else
-                return RedirectToAction("Register");
+
+            var dbUser = _context.Users.Where(x => x.UserName == user.userName).FirstOrDefault();
+
+            if (dbUser == null)
+            {
+                ViewData["ErrorMessage"] = "Неверный логин.";
+                return View();
+            }
+
+            var passwordHasher = new PasswordHasher<UsersEntity>();
+            var result = passwordHasher.VerifyHashedPassword(dbUser, dbUser.Password, user.password);
+
+            if (result == PasswordVerificationResult.Failed)
+            {
+                ViewData["ErrorMessage"] = "Неверный пароль.";
+                return View();
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, dbUser.UserName)
+            };
+
+            var useridentity = new ClaimsIdentity(claims, "Login");
+            ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
+
+            await HttpContext.SignInAsync(principal);
+            await Authenticate(user);
+
+            return RedirectToAction("MainBase", "Home");
         }
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register([FromForm] UsersRequest user)
         {
-            bool IsSuccess = await Registered(user);
-
-            if (IsSuccess)
+            if (string.IsNullOrEmpty(user.userName) || string.IsNullOrEmpty(user.password) || string.IsNullOrEmpty(user.name))
             {
-                if (string.IsNullOrEmpty(user.userName) || string.IsNullOrEmpty(user.password) || string.IsNullOrEmpty(user.name))
-                {
-                    ViewData["ErrorMessage"] = "Все поля должны быть заполнены.";
-                    return View();
-                }
-
-                var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name,"ClaimName")
-                    };
-
-                var useridentity = new ClaimsIdentity(claims, "Register");
-                ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
-
-
-                await HttpContext.SignInAsync(principal);
-
-                return RedirectToAction("Login");
+                ViewData["ErrorMessage"] = "Все поля должны быть заполнены.";
+                return View();
             }
-            else
+
+            var existingUser = _context.Users.FirstOrDefault(u => u.UserName == user.userName);
+            if (existingUser != null)
             {
                 ViewData["ErrorMessage"] = "Пользователь с таким именем уже существует.";
                 return View();
             }
+
+            var passwordHasher = new PasswordHasher<Users>();
+            string hashedPassword = passwordHasher.HashPassword(null, user.password);
+            var userRole = _context.Roles.FirstOrDefault(_ => _.Name == "user");
+
+            var newUser = new Users
+            {
+                UserName = user.userName,
+                Password = hashedPassword,
+                Name = user.name,
+                Email = user.email,
+                RoleId = userRole.Id,
+            };
+
+            await _usersService.CreateUser(newUser);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.userName)
+            };
+
+            var useridentity = new ClaimsIdentity(claims, "Register");
+            ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
+
+            await HttpContext.SignInAsync(principal);
+
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet("YandexTokenRedirect")]
+        [AllowAnonymous]
+        public IActionResult YandexTokenRedirect()
+        {
+            return View();
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> AuthenticateWithYandex(string token)
+        public async Task<IActionResult> AuthenticateWithYandex(string access_token)
         {
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(access_token))
+                return BadRequest("access_token пустой");
+
+            using (var client = new HttpClient())
             {
-                return RedirectToAction("Login");
-            }
-
-            // Получение информации о пользователе с помощью токена
-            var client = _httpClientFactory.CreateClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://api.login.yandex.ru/info");
-            request.Headers.Add("Authorization", $"Bearer {token}");
-
-            var response = await client.SendAsync(request);
-            if (response.IsSuccessStatusCode)
-            {
-                var userInfo = await response.Content.ReadAsStringAsync();
-                dynamic user = JsonConvert.DeserializeObject(userInfo);
-
-                // Получаем информацию о пользователе
-                string userId = user.id;
-                string userName = user.display_name;
-                string email = user.default_email ?? "";
-
-                // Проверяем, существует ли пользователь
-                var existingUser = _context.Users.FirstOrDefault(x => x.UserName == userId);
-
-                if (existingUser == null)
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.GetAsync($"https://login.yandex.ru/info?oauth_token={access_token}");
+                if (response.IsSuccessStatusCode)
                 {
-                    var roleEntity = _context.Roles.FirstOrDefault(r => r.Name == "user");
-                    var newUser = Users.Create(userId, userName, user.password, roleEntity.Id, email).Users;
-                    await _usersService.CreateUser(newUser);
-                    existingUser = newUser;
+                    string userInfo = await response.Content.ReadAsStringAsync();
+
+                    if (!string.IsNullOrEmpty(userInfo))
+                    {
+                        dynamic user = JsonConvert.DeserializeObject(userInfo);
+
+                        if (user != null)
+                        {
+                            // Получаем информацию о пользователе
+                            string userName = user.real_name;
+                            string userLogin = user.login;
+                            string email = user.default_email ?? "";
+                            // Хэшируем пароль
+                            var passwordHasher = new PasswordHasher<Users>();
+                            string hashedPassword = passwordHasher.HashPassword(null, "1111");
+
+                            // Проверяем, существует ли пользователь
+                            var existingUser = _context.Users.Where(x => x.UserName == userLogin).Select(_ => new Users { Id = _.Id, Email = _.Email, Name = _.Name, Password = _.Password, RoleId = _.RoleId, UserName = _.UserName }).FirstOrDefault();
+
+                            if (existingUser == null)
+                            {
+                                var roleEntity = _context.Roles.FirstOrDefault(r => r.Name == "user");
+                                var newUser = Users.Create(userLogin, userName, hashedPassword, roleEntity.Id, email).Users;
+                                await _usersService.CreateUser(newUser);
+                                existingUser = newUser;
+                            }
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Name, existingUser.UserName)
+                            };
+
+                            var useridentity = new ClaimsIdentity(claims, "Login");
+                            ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
+
+                            await HttpContext.SignInAsync(principal);
+
+                            await Authenticate(existingUser);
+
+                            return RedirectToAction("MainBase", "Home");
+                        }
+
+                        return BadRequest("Десериализация не прошла");
+                    }
+
+                    return BadRequest("Яндекс вернул пустоту");
                 }
-
-                await Authenticate(existingUser);
-
-                return RedirectToAction("MainBase", "Home");
-            }
-            else
-            {
-                ViewData["ErrorMessage"] = "Ошибка авторизации. Попробуйте снова.";
-                return RedirectToAction("Login"); // Возвращаемся на страницу логина в случае ошибки
+                else
+                {
+                    return BadRequest("Ошибка авторизации");
+                }
             }
         }
     }
