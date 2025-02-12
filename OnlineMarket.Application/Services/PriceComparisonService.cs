@@ -1,12 +1,5 @@
-﻿using HtmlAgilityPack;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using OnlineMarket.Core.Abstractions;
+﻿using OnlineMarket.Core.Abstractions;
 using OnlineMarket.Core.Models;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System.Text.RegularExpressions;
 
 namespace OnlineMarket.Application.Services
 {
@@ -39,8 +32,8 @@ namespace OnlineMarket.Application.Services
         private async Task<CompetitorPrice> ParseYandexMarket(string productName)
         {
             return new CompetitorPrice
-            { 
-                PlatformName = "Яндекс.Маркет", 
+            {
+                PlatformName = "Яндекс.Маркет",
                 Url = "https://market.yandex.ru/",
                 LastUpdated = DateTime.UtcNow
             };

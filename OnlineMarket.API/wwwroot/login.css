@@ -163,3 +163,19 @@ button {
     .yandex-button:hover {
         background-color: #FF2A2A;
     }
+.forgot-password {
+    text-align: center;
+    margin-top: 10px;
+}
+
+    .forgot-password a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 14px;
+        transition: color 0.3s ease, text-decoration 0.3s ease;
+    }
+
+        .forgot-password a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }

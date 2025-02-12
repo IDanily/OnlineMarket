@@ -1,6 +1,4 @@
-﻿using OnlineMarket.Core.Models;
-
-namespace OnlineMarket.API.Contacts
+﻿namespace OnlineMarket.API.Contacts
 {
     public record UsersRequest(
             int Id,

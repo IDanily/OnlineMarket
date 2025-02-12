@@ -24,13 +24,14 @@
 		<Content Remove="C:\Users\danil\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.js.map" />
 		<Content Remove="C:\Users\danil\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
 		<Content Remove="C:\Users\danil\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
-		<Content Remove="Views\Shared\Components\Order.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="bootstrap" Version="5.3.3" />
 		<PackageReference Include="Bootstrap-Lightbox.NuGet" Version="5.1.1" />
 		<PackageReference Include="EPPlus" Version="7.5.3" />
+		<PackageReference Include="MailKit" Version="4.10.0" />
+		<PackageReference Include="MimeKit" Version="4.10.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.1" />
@@ -48,10 +49,6 @@
 		<ProjectReference Include="..\OnlineMarket.Application\OnlineMarket.Application.csproj" />
 		<ProjectReference Include="..\OnlineMarket.Core\OnlineMarket.Core.csproj" />
 		<ProjectReference Include="..\OnlineMarket.DataBase\OnlineMarket.DataBase.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="Views\Shared\Components\Order.cshtml" />
 	</ItemGroup>
 
 </Project>

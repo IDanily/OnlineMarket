@@ -20,7 +20,7 @@ namespace OnlineMarket.Core.Models
 
         [IgnoreDataMember]
         public Role? Role { get; set; }
-        public static (Users Users, string Error) Create( string userName, string name, string password, int roleId, string email)
+        public static (Users Users, string Error) Create(string userName, string name, string password, int roleId, string email)
         {
             var error = string.Empty;
 

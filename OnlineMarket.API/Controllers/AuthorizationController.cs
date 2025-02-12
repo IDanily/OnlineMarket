@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using OnlineMarket.API.Contacts;
 using OnlineMarket.Application.Services;
@@ -21,12 +20,14 @@ namespace OnlineMarket.API.Controllers
         private readonly MarketStoreDbContext _context;
         private readonly IUsersService _usersService;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly EmailService _emailService;
 
-        public AuthorizationController(MarketStoreDbContext context, IUsersService service, IHttpClientFactory httpClientFactory)
+        public AuthorizationController(MarketStoreDbContext context, IUsersService service, IHttpClientFactory httpClientFactory, EmailService emailService)
         {
             _context = context;
             _usersService = service;
             _httpClientFactory = httpClientFactory;
+            _emailService = emailService;
         }
 
         [AllowAnonymous]
@@ -257,5 +258,63 @@ namespace OnlineMarket.API.Controllers
                 }
             }
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        public IActionResult ConfirmReset()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                ViewData["ErrorMessage"] = "Email не найден";
+                return View();
+            }
+
+            // Генерация кода
+            var code = new Random().Next(100000, 999999).ToString();
+
+            // Сохранение кода в БД (или кэш)
+            user.ResetCode = code;
+            user.ResetCodeExpiration = DateTime.UtcNow.AddHours(2).AddMinutes(10);
+            await _context.SaveChangesAsync();
+
+            // Отправка письма
+            await _emailService.SendEmailAsync(user.Email, "Сброс пароля", $"Ваш код для сброса пароля: {code}");
+
+            return RedirectToAction("ConfirmReset", new { email = email });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string email, string code, string newPassword)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null || user.ResetCode != code)
+            {
+                ViewData["ErrorMessage"] = "Неверный код или время действия истекло";
+                return View("ConfirmReset");
+            }
+
+            var passwordHasher = new PasswordHasher<Users>();
+            string hashedPassword = passwordHasher.HashPassword(null, newPassword);
+
+            // Хешируем новый пароль
+            user.Password = hashedPassword;
+            user.ResetCode = null; // Сбрасываем код
+            user.ResetCodeExpiration = null;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Login");
+        }
+
+
     }
 }

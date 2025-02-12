@@ -1,0 +1,8 @@
+﻿@using OnlineMarket.DataBase.Entites
+@model List<NotificationEntity>
+@foreach (var notification in Model)
+{
+    <li class="@((notification.IsRead ? "read" : "unread"))">
+        <span>@notification.Message</span>
+    </li>
+}

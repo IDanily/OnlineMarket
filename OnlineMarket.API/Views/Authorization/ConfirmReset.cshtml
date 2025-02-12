@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="~/login.css">
+    <title>Подтверждение кода</title>
+</head>
+<body>
+    <div class="background"></div>
+    <form action="/Authorization/ResetPassword" method="post" class="login-form">
+        <h3>Подтверждение кода</h3>
+
+        <!-- Блок для отображения ошибок -->
+        @if (ViewData["ErrorMessage"] != null)
+        {
+            <div class="error-message">
+                <p>@ViewData["ErrorMessage"]</p>
+            </div>
+        }
+
+        <input type="hidden" name="email" value="@ViewData["Email"]" />
+
+        <label for="code">Код</label>
+        <input type="text" name="code" id="code" required placeholder="Введите код">
+
+        <label for="newPassword">Новый пароль</label>
+        <input type="password" name="newPassword" id="newPassword" required placeholder="Введите новый пароль">
+
+        <div class="reg-button">
+            <button type="submit">Сохранить</button>
+        </div>
+    </form>
+</body>
+</html>

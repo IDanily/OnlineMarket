@@ -25,5 +25,9 @@ namespace OnlineMarket.DataBase.Entites
         public OrderEntity Order { get; set; }
         [IgnoreDataMember]
         public List<ProductEntity> Products { get; set; }
+        [IgnoreDataMember]
+        public List<NotificationEntity> Notifications { get; set; }
+        public DateTime? ResetCodeExpiration { get; set; }
+        public string ResetCode { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineMarket.Core.Models;
 using OnlineMarket.DataBase.Configurations;
 using OnlineMarket.DataBase.Entites;
 
@@ -18,6 +17,7 @@ namespace OnlineMarket.DataBase
         public DbSet<UsersEntity> Users { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<NotificationEntity> Notification { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,7 @@ namespace OnlineMarket.DataBase
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new UsersConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfigurator());
 
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(op => op.Id);

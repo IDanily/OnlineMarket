@@ -40,7 +40,8 @@ namespace OnlineMarket.API.Controllers
                 UserAutorize = user,
                 Users = users,
                 Products = products,
-                SellerOrders = GetOrdersForSeller(user.Id),
+                ReportSellerOrders = GetOrdersForSeller(user.Id),
+                UserOrders = GetOrdersForUser(user.Id),
                 IsAdmin = HttpContext.User.IsInRole("admin"),
                 IsSeller = HttpContext.User.IsInRole("seller")
             };
@@ -142,12 +143,31 @@ namespace OnlineMarket.API.Controllers
         public List<OrderSummary> GetOrdersForSeller(int sellerId)
         {
             List<OrderSummary> productsDb = _context.OrderProducts
-                .Include(o => o.Product)
+                .Include(o => o.Product).Include(_ => _.Order).ThenInclude(c => c.Users)
                 .Where(_ => _.IsSold && _.Product.SellerId == sellerId)
-                .GroupBy(op => op.Product.Name)
+                .GroupBy(op => new { op.Product.Name })
                 .Select(group => new OrderSummary
                 {
-                    ProductName = group.Key,
+                    ProductName = group.Key.Name,
+                    Quantity = group.Sum(p => p.Quantity),
+                    TotalAmount = group.Sum(p => p.Product.Price * p.Quantity)
+                })
+                .ToList();
+
+            return productsDb;
+        }
+
+        public List<OrderSummary> GetOrdersForUser(int userId)
+        {
+            List<OrderSummary> productsDb = _context.OrderProducts
+                .Include(_ => _.Order)
+                .Include(o => o.Product)
+                .Where(_ => _.IsSold && _.Order.UsersId == userId)
+                .GroupBy(op => new { op.Product.Id, op.Product.Name })
+                .Select(group => new OrderSummary
+                {
+                    ProductId = group.Key.Id,
+                    ProductName = group.Key.Name,
                     Quantity = group.Sum(p => p.Quantity),
                     TotalAmount = group.Sum(p => p.Product.Price * p.Quantity)
                 })

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineMarket.Core.Abstractions;
 using OnlineMarket.Core.Models;
-using OnlineMarket.DataBase;
 using OnlineMarket.DataBase.Entites;
 
 namespace OnlineMarket.DataBase.Reposotories

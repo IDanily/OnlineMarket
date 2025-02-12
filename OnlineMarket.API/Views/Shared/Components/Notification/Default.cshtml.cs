@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace OnlineMarket.API.Views.Shared.Components.Order
+namespace OnlineMarket.API.Views.Shared.Components.Notification
 {
-    public class DefualtModel : PageModel
+    public class DefaultModel : PageModel
     {
         public void OnGet()
         {

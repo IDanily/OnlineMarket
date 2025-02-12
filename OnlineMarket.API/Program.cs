@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using OnlineMarket.Application.Services;
 using OnlineMarket.Core.Abstractions;
@@ -34,6 +33,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IPriceComparison, PriceComparisonService>();
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddHttpClient();
 
 // Подключение к базе данных

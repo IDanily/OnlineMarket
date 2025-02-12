@@ -141,7 +141,7 @@ namespace OnlineMarket.API.Controllers
         public async Task<ActionResult<int>> Create([FromForm] ProductsActionModel model)
         {
             var userAutorize = HttpContext.User;
-            var user = _context.Users.Where(_ => _.UserName == userAutorize.Identity.Name).Select(c => new Users() {Id = c.Id, UserName = c.UserName, Password = c.Password, RoleId = c.RoleId }).FirstOrDefault();
+            var user = _context.Users.Where(_ => _.UserName == userAutorize.Identity.Name).Select(c => new Users() { Id = c.Id, UserName = c.UserName, Password = c.Password, RoleId = c.RoleId }).FirstOrDefault();
             string uniqueFileName = ProcessUploadedFile(model);
             var category = _context.Categories.Where(_ => _.Id == model.CategoryId).Select(c => new Category() { Id = c.Id, Code = c.Code, DateCreate = c.DateCreate, DateExpiration = c.DateExpiration, Description = c.Description, Name = c.Name }).FirstOrDefault();
 

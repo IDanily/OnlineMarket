@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using OnlineMarket.Core.Models;
+﻿using OnlineMarket.Core.Models;
 
 namespace OnlineMarket.API.ViewModels
 {

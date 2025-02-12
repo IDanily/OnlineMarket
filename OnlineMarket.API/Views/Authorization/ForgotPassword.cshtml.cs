@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace OnlineMarket.API.Views.Shared.Components.Order
+namespace OnlineMarket.API.Views.Authorization
 {
-    public class DefualtModel : PageModel
+    public class ForgotPasswordModel : PageModel
     {
         public void OnGet()
         {

@@ -1,0 +1,48 @@
+﻿@using OnlineMarket.DataBase.Entites
+@model List<NotificationEntity>
+
+<h2>Уведомления</h2>
+<ul class="notification-list">
+    @foreach (var notification in Model)
+    {
+        <li class="notification-item @if (!notification.IsRead) {
+    <text>unread</text>
+ }">
+            <span>@notification.Message</span>
+            <form method="post" action="/Notifications/MarkAsRead">
+                <input type="hidden" name="notificationId" value="@notification.Id" />
+                <button type="submit" class="mark-read-btn">Пометить как прочитанное</button>
+            </form>
+        </li>
+    }
+</ul>
+
+<style>
+    .notification-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .notification-item {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .notification-item.unread {
+            background-color: #f0f8ff;
+            font-weight: bold;
+        }
+
+    .mark-read-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+
+        .mark-read-btn:hover {
+            background-color: #45a049;
+        }
+</style>

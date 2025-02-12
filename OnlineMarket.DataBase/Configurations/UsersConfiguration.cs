@@ -18,6 +18,8 @@ namespace OnlineMarket.DataBase.Configurations
 
             builder.Property(e => e.RoleId).IsRequired(false);
             builder.Property(e => e.Email).IsRequired();
+            builder.Property(e => e.ResetCode);
+            builder.Property(e => e.ResetCodeExpiration);
         }
     }
 }

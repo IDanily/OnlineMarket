@@ -100,8 +100,72 @@
             </div>
         }
 
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>История заказов</h2>
+                    <div class="line-dec"></div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <table class="table table-bordered" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Название товара</th>
+                            <th>Количество</th>
+                            <th>Общая сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.UserOrders)
+                        {
+                            <tr ondblclick="location.href='/Product/GetProduct/@order.ProductId'">
+                                <td>@order.ProductName</td>
+                                <td>@order.Quantity</td>
+                                <td>@order.TotalAmount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         @if (Model != null && (Model.IsSeller || Model.IsAdmin))
         {
+@*             <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Ваши заказы</h2>
+                        <div class="line-dec"></div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <table class="table table-bordered" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Покупатель</th>
+                                <th>Товар</th>
+                                <th>Статус</th>
+                                <th>Отправить уведомление</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.SellerOrders)
+                            {
+                                <tr>
+                                    <td>@order.User.Email</td>
+                                    <td>@order.Product.Name</td>
+                                    <td>@order.Status</td>
+                                    <td>
+                                        <button onclick="sendNotification('@order.UserId', 'Ваш заказ №@order.Id готов!')" class="btn btn-primary">Отправить</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div> *@
+
             <div class="row mt-5">
                 <div class="col-lg-12">
                     <div class="section-heading">
@@ -119,7 +183,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var order in Model.SellerOrders)
+                            @foreach (var order in Model.ReportSellerOrders)
                             {
                                 <tr>
                                     <td>@order.ProductName</td>

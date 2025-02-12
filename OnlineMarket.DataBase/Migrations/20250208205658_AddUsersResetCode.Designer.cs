@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineMarket.DataBase;
 
@@ -11,9 +12,11 @@ using OnlineMarket.DataBase;
 namespace OnlineMarket.DataBase.Migrations
 {
     [DbContext(typeof(MarketStoreDbContext))]
-    partial class MarketStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250208205658_AddUsersResetCode")]
+    partial class AddUsersResetCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,34 +52,6 @@ namespace OnlineMarket.DataBase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("OnlineMarket.DataBase.Entites.NotificationEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("OnlineMarket.DataBase.Entites.OrderEntity", b =>
@@ -250,17 +225,6 @@ namespace OnlineMarket.DataBase.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("OnlineMarket.DataBase.Entites.NotificationEntity", b =>
-                {
-                    b.HasOne("OnlineMarket.DataBase.Entites.UsersEntity", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("OnlineMarket.DataBase.Entites.OrderEntity", b =>
                 {
                     b.HasOne("OnlineMarket.DataBase.Entites.UsersEntity", "Users")
@@ -341,8 +305,6 @@ namespace OnlineMarket.DataBase.Migrations
 
             modelBuilder.Entity("OnlineMarket.DataBase.Entites.UsersEntity", b =>
                 {
-                    b.Navigation("Notifications");
-
                     b.Navigation("Order")
                         .IsRequired();
 

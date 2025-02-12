@@ -89,7 +89,7 @@ namespace OnlineMarket.DataBase.Repositories
         {
             var productsEntities = await _context.Products.Include(_ => _.Category).AsNoTracking().ToListAsync();
 
-            var entityDb = productsEntities.Where(_ => _.Id == id).Select(e => Product.Get(e.Id, e.Number, e.Description, e.Name, e.Picture, e.Category.Name,e.Price).Products).FirstOrDefault();
+            var entityDb = productsEntities.Where(_ => _.Id == id).Select(e => Product.Get(e.Id, e.Number, e.Description, e.Name, e.Picture, e.Category.Name, e.Price).Products).FirstOrDefault();
 
             return entityDb;
         }

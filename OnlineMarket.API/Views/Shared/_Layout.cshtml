@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var notificationCountContent = await Component.InvokeAsync("NotificationCount");
+    var notificationCountStr = notificationCountContent.ToString();
+    var notificationCount = notificationCountStr != null ? 0 : int.Parse(notificationCountStr);
+}
+
+<!DOCTYPE html>
 <html lang="ru">
 
 <head>
@@ -106,13 +112,19 @@
                     <ul class="nav user-nav">
                         @if (User?.Identity?.IsAuthenticated ?? false)
                         {
-                            <li><a href="/Users/Cabinet"><i class="fas fa-user"></i> Личный кабинет</a></li>
-                            <li><a href="/Order/GetOrder"><i class="fas fa-shopping-cart"></i> Корзина @await Component.InvokeAsync("Order")</a></li>
-                            <li class="logout-btn"><a href="/Authorization/Logout"><i class="fas fa-sign-out-alt"></i> Выйти</a></li>
+                            <li><a href="/Users/Cabinet"><i class="fas fa-user icon-large"></i></a></li>
+                            <li><a href="/Order/GetOrder"><i class="fas fa-shopping-cart icon-large"></i>@await Component.InvokeAsync("Order")</a></li>
+                            <li>
+                                <a href="javascript:void(0);" class="notification-link" id="notificationBell">
+                                    <i class="fas fa-bell icon-large"></i>
+                                    <span id="notificationCount" class="notification-count" style="display: @(notificationCount > 0 ? "inline-block" : "none")">@notificationCount</span>
+                                </a>
+                            </li>
+                            <li class="logout-btn"><a href="/Authorization/Logout"><i class="fas fa-sign-out-alt icon-large"></i></a></li>
                         }
                         else
                         {
-                            <li><a href="/Authorization/Login"><i class="fas fa-sign-in-alt"></i> Войти</a></li>
+                            <li><a href="/Authorization/Login"><i class="fas fa-sign-in-alt icon-large"></i></a></li>
                         }
                     </ul>
                 </div>
@@ -180,6 +192,13 @@
 
     <div id="success-banner" class="alert alert-success">
         Товар успешно добавлен в корзину!
+    </div>
+
+    <!-- Всплывающее меню с уведомлениями -->
+    <div id="notificationDropdown" class="notification-dropdown" style="display: none;">
+        <ul>
+            @await Component.InvokeAsync("Notification")
+        </ul>
     </div>
 
     <div id="categoryUrl" data-url="@Url.Action("List", "Category")" style="display:none;"></div>

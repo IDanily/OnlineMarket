@@ -126,6 +126,86 @@
         });
 
         $('#orderSuccessModal').modal('show');
+
+        function toggleNotifications() {
+            let list = document.getElementById("notificationList");
+            list.classList.toggle("show");
+
+            if (list.classList.contains("show")) {
+                fetch("/Notification/GetUserNotifications")
+                    .then(response => response.json())
+                    .then(data => {
+                        let listHTML = data.map(n => `
+                    <div class="notification-item ${n.isRead ? '' : 'unread'}">
+                        ${n.message}
+                    </div>
+                `).join("");
+
+                        list.innerHTML = listHTML || "<p>Нет новых уведомлений</p>";
+                        document.getElementById("notificationCount").innerText = data.length;
+                    });
+            }
+        }
+
+        function sendNotification(userId, message) {
+            fetch("/Notification/SendNotification", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId, message })
+            }).then(response => {
+                if (response.ok) alert("Уведомление отправлено!");
+            });
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var notificationBell = document.getElementById('notificationBell');
+        var notificationDropdown = document.getElementById('notificationDropdown');
+
+        // Обработка клика по колокольчику для открытия/закрытия меню
+        //notificationBell.addEventListener('click', function () {
+        //    if (notificationDropdown.style.display === 'none' || notificationDropdown.style.display === '') {
+        //        notificationDropdown.style.display = 'block'; // Открыть меню
+        //    } else {
+        //        notificationDropdown.style.display = 'none'; // Закрыть меню
+        //    }
+        //});
+
+        // Закрытие меню при клике вне его
+        window.addEventListener('click', function (e) {
+            if (!notificationBell.contains(e.target) && !notificationDropdown.contains(e.target)) {
+                notificationDropdown.style.display = 'none';
+            }
+        });
+
+        notificationBell.addEventListener('click', function () {
+            if (notificationDropdown.style.display === 'none' || notificationDropdown.style.display === '') {
+                fetch('/Notifications/MarkAsRead', { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('notificationCount').style.display = 'none';
+
+                            const notifications = document.querySelectorAll('.notification-item');
+                            notifications.forEach(notification => {
+                                notification.classList.remove('unread');
+                            });
+
+                            console.log("Уведомления помечены как прочитанные");
+                        } else {
+                            alert('Произошла ошибка при обновлении уведомлений');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при запросе:', error);
+                        alert('Не удалось обновить уведомления. Попробуйте снова.');
+                    });
+
+                notificationDropdown.style.display = 'block';
+            } else {
+                notificationDropdown.style.display = 'none';
+            }
+        });
     });
 
     document.addEventListener("DOMContentLoaded", function () {

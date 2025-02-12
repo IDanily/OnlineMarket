@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using OnlineMarket.Core.Models;
-using OnlineMarket.DataBase.Entites;
+﻿using OnlineMarket.Core.Models;
 using System.Security.Claims;
 
 namespace OnlineMarket.API.ViewModels

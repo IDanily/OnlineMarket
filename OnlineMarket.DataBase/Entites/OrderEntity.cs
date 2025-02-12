@@ -1,5 +1,4 @@
-﻿using OnlineMarket.Core.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineMarket.DataBase.Entites
 {
